@@ -41,7 +41,7 @@ class Navy():
     '''Manages ship captains
 
     '''
-    captains: dict
+    captains =  dict()
 
     def __init__(self, admiral, captain_class):
         self.captains = {}
@@ -93,10 +93,10 @@ class Navy():
 
 class Captain():
     '''This is the class that manages each ship'''
-    last_location: Location
-    current_location: Location
-    navy: Navy
-    ship_id: int
+    # last_location =  Location()
+    # current_location = Location()
+    # navy = Navy()
+    # ship_id: int
 
     def __init__(self, last_location, current_location, ship_id, navy):
         self.last_location = last_location
@@ -108,14 +108,21 @@ class Captain():
         return self.ship_id == other.ship_id
 
     def __str__(self):
-        return f"""
-        Captain of Ship: {str(self.ship_id)}
-         - Status: {str(self.status)}
-         - Halite: {str(self.ship.halite_amount)}
-         - Current Location: ({str(self.current_location.position.x)}, {str(self.current_location.position.y)})
-         - Last Location: ({str(self.last_location.position.x)}, {str(self.last_location.position.y)})
-         - Priority: {str(self.priority)}
-        """
+        return """
+        Captain of Ship: {}
+         - Status: {}
+         - Halite: {}
+         - Current Location: ({}, {})
+         - Last Location: ({}, {})
+         - Priority: {}
+        """.format(str(self.ship_id),str(self.status),
+        str(self.ship.halite_amount),
+        str(self.current_location.position.x),
+        str(self.current_location.position.y),
+        str(self.last_location.position.x),
+        str(self.last_location.position.y),
+        str(self.priority)
+        )
 
     @property
     def game_map(self):
@@ -262,7 +269,7 @@ class Captain():
         Returns:
             ship.move -- Returns a ship command as expected by the command queue
         '''
-        logger.debug(f'{self.ship_id} is hunting')
+        logger.debug('{} is hunting'.format(self.ship_id))
         try:
             if self.current_location.cell.has_structure:
                 return self.go_random_safe()
@@ -294,7 +301,7 @@ class Captain():
         Returns:
             ship.move -- Returns a ship command as expected by the command queue
         '''
-        logger.debug(f'{self.ship_id} is banking')
+        logger.debug('{} is banking'.format(self.ship_id))
         try:
             target = self.closest_drop.position
             move = self.game_map.naive_navigate(self.ship, target)
@@ -339,12 +346,12 @@ class Captain():
         Returns:
             ship.move -- Returns a ship command as expected by the command queue
         '''
-        logger.debug(f'{self.ship_id} is building.')
+        logger.debug('{} is building.'.format(self.ship_id))
         try:
             target = self.navy.admiral.map.best_location.position
             move = self.game_map.naive_navigate(self.ship, target)
             if self.current_location.position == self.navy.admiral.map.best_location.position:
-                logger.debug(f'{self.ship_id} built a dropoff.')
+                logger.debug('{} built a dropoff.'.format(self.ship_id))
                 return self.ship.make_dropoff()
             if self.can_afford_to_move:
                 return self.ship.move(move)
@@ -359,7 +366,7 @@ class Captain():
         Returns:
             ship.move -- Returns a ship command as expected by the command queue
         '''
-        logger.debug(f'{self.ship_id} looting')
+        logger.debug('{} looting'.format(self.ship_id))
         return self.stay_still()
 
     def go_random_safe(self):
@@ -368,7 +375,7 @@ class Captain():
         Returns:
             ship.move -- Returns a ship command as expected by the command queue
         '''
-        logger.debug(f'{self.ship_id} going random safe')
+        logger.debug('{} going random safe'.format(self.ship_id))
         try:
             if self.can_afford_to_move:
                 target = self.current_location.get_random_neighbor_position_without_structure()
@@ -387,7 +394,7 @@ class Captain():
         Returns:
             ship.move -- Returns a ship command as expected by the command queue
         '''
-        logger.debug(f'{self.ship_id} going random unsafe')
+        logger.debug('{} going random unsafe'.format(self.ship_id))
         try:
             if self.can_afford_to_move:
                 target = self.current_location.get_random_neighbor_position_without_structure()
@@ -406,7 +413,7 @@ class Captain():
             ship.move -- Returns a ship command as expected by the command queue
         '''
         try:
-            logger.debug(f'{self.ship_id} going random')
+            logger.debug('{} going random'.format(self.ship_id))
             target_distance = self.game_map.calculate_distance(
                 self.ship.position, target_location.position)
             neighbors = self.ship.position.get_surrounding_cardinals()

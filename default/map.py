@@ -17,9 +17,9 @@ logger.setLevel(LOG_LEVEL)
 
 
 class Location():
-    position: Position
-    cell: MapCell
-    safe: bool = True
+    #position= Position()
+    #cell= MapCell()
+    safe = True
     # map: Map
 
     def __init__(self, position, cell, map):
@@ -104,10 +104,10 @@ class Location():
 
 
 class Map():
-    locations: list
-    safe_locations: list
+    locations= list()
+    safe_locations= list()
 
-    def __init__(self, game, locations=list, safe_locations=list):
+    def __init__(self, game, locations=list(), safe_locations=list()):
         self.locations = []
         self.safe_locations = []
         self.game_map = game.game_map
